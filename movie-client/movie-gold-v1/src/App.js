@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './component/Layout';
-import Home from './component/home/Home';
+
 
 function App() {
   const [movies, setMovies] = useState();
 
-  const getMovice = async () => {
+  const getMovies = async () => {
     
     try{
       const response = await axios.get("http://localhost:8080/api/v1/movies");
@@ -21,7 +21,7 @@ function App() {
   }
   
   useEffect(()=>{
-      getMovice();
+    getMovies();
   },[])
   return (
     <div className="App">
