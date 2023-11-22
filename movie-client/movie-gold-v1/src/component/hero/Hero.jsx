@@ -16,7 +16,7 @@ function Hero({movies}) {
                                         <div className="movie-poster">
                                             <img src={movie.poster} alt="" />
                                         </div>
-                                        <div className="movei-title">
+                                        <div className="movie-title">
                                             <h4>{movie.title} </h4>
                                         </div>
                                     </div>

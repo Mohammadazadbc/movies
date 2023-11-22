@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './component/Layout';
+import Header from './component/header/Header';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
   },[])
   return (
     <div className="App">
+      <Header/>
       <Routes>
         <Route path='/' element={<Layout movies={movies} />} />    
       </Routes>
