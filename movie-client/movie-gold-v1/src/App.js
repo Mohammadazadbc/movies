@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './component/Layout';
 import Header from './component/header/Header';
+import Trailler from './component/trailer/Trailler';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path='/' element={<Layout movies={movies} />} />    
+        <Route path='/trailer/:ytKeyId' element={<Trailler />} />    
       </Routes>
       
     </div>
