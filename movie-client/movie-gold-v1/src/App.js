@@ -6,10 +6,14 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './component/Layout';
 import Header from './component/header/Header';
 import Trailler from './component/trailer/Trailler';
+import Review from './reviwes/Review';
+import { setRef } from '@mui/material';
 
 
 function App() {
   const [movies, setMovies] = useState();
+  const [movie,setMovie] = useState();
+  const [reviews,setReviews] = useState();
 
   const getMovies = async () => {
     
@@ -21,6 +25,30 @@ function App() {
         console.log(err)
       }
   }
+
+
+  const getMovieData = async (movieId) => {
+     
+    try 
+    {
+        const response = await axios.get(`http://localhost:8080/api/v1/movies/${movieId}`);
+
+        const singleMovie = response.data;
+
+        setMovie(singleMovie);
+
+        setReviews(singleMovie.reviews);
+        
+
+    } 
+    catch (error) 
+    {
+      console.error(error);
+    }
+
+  }
+
+  
   
   useEffect(()=>{
     getMovies();
@@ -31,6 +59,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout movies={movies} />} />    
         <Route path='/trailer/:ytKeyId' element={<Trailler />} />    
+        <Route  path="/Reviews/:movieId" element ={<Review getMovieData = {getMovieData} movie={movie} reviews ={reviews} setReviews = {setReviews} />} />    
       </Routes>
       
     </div>

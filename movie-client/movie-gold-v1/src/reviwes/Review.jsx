@@ -7,67 +7,87 @@ import ReviewFrom from "../component/reviewForm/ReviewFrom";
 import React from 'react'
 import axios from "axios";
 
-const Review = ({getMovieData, movie, reviews,setReviews}) => {
+const Review = ({getMovieData,movie,reviews,setReviews}) => {
     const revText = useRef();
     let params = useParams();
     const movieId = params.movieId;
 
+    useEffect(()=>{
+        getMovieData(movieId);
+    },[])
+
     const addReview = async (e)=> {
         e.preventDefault();
 
+        const rev = revText.current;
+        try
+        {
+            const response = await axios.post("http://localhost:8080/api/v1/movies",{reviewBody:rev.value,imdbId:movieId})
 
-        try{
-            const rev = revText.current;
-        const response = await axios.post("http://localhost:8080/api/v1/movies",{reviewBody:rev.value,imdbId:movieId})
-
-        const updatedReviews = [...reviews,{body:rev.value}]
-        rev.value="";
-        
-        setReviews(updatedReviews);
-        }catch(err){
-            console.log(err)
+            const updatedReviews = [...reviews, {body:rev.value}];
+    
+            rev.value = "";
+    
+            setReviews(updatedReviews);
+        }
+        catch(err)
+        {
+            console.error(err);
         }
         
 
     }
 
-    useEffect(()=> {
-        getMovieData(movieId);  
-    },[]);
+
 
   return (
-        <Container>
-            <Row> 
-            <Col><h3>Reviews</h3></Col>
-             </Row>
-            <Row className="mt-2"> 
-                <Col>
-                    <img src={movie?.poster} alt="" />
-                </Col> 
-                <Col>
-                    {
+    <Container>
+    <Row>
+        <Col><h3>Reviews</h3></Col>
+    </Row>
+    <Row className="mt-2">
+        <Col>
+            <img src={movie?.poster} alt="" />
+        </Col>
+        <Col>
+            {
+                <>
+                    <Row>
+                        <Col>
+                        <ReviewFrom handleSubmit={addReview} revText={revText} labelText = "Write a Review?" />  
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <hr />
+                        </Col>
+                    </Row>
+                </>
+            }
+            {
+                reviews?.map((r) => {
+                    return(
                         <>
-                        <Row>
-                            <Col>
-                                <ReviewFrom handleSubmit={addReview} revText={revText} labelText="Write a Review" />
-                            </Col>
-                        </Row>
+                            <Row>
+                                <Col>{r.body}</Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <hr />
+                                </Col>
+                            </Row>                                
                         </>
-                    }
-                    {
-                        reviews?.map((r)=> {
-                            return (
-                                <>
-                                    <Row>
-                                        <Col> {r.body} </Col>
-                                    </Row>
-                                </>
-                            )
-                        })
-                    }
-                </Col>
-            </Row>
-        </Container>
+                    )
+                })
+            }
+        </Col>
+    </Row>
+    <Row>
+        <Col>
+            <hr />
+        </Col>
+    </Row>        
+</Container>
   )
 }
 
